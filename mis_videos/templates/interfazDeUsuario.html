@@ -25,12 +25,20 @@
     <div class="container my-4">
         <form method="post">
             {% csrf_token %}
-            
-            <!-- Mostrar el mensaje de error global si existe -->
-            {% if mensaje == True %}
-                <div class="alert alert-danger" role="alert">
-                    <text>Error: Todos los campos son obligatorios</text>
-                </div>
+            {% if mensajeNombreVideo %}
+            <div class="alert alert-danger" role="alert">
+                <span>Error: Ingresa caracteres correctos para el nombre del video</span>
+            </div>
+            {% endif %}
+            {% if mensajeRutaVideo %}
+            <div class="alert alert-danger" role="alert">
+                <span>Error: Ingresa caracteres correctos para la ruta del video</span>
+            </div>
+            {% endif %}
+            {% if mensajeTamañoVideo %}
+            <div class="alert alert-danger" role="alert">
+                <span>Error: El tamaño del video debe ser menor a 3 MB</span>
+            </div>
             {% endif %}
             <div class="mb-3">
               <label for="nombreVideo" class="form-label">Nombre del video</label>
@@ -48,7 +56,6 @@
             <button type="submit" class="btn btn-primary">Agregar</button>
           </form>
     </div>
-
     <div class="container">
         <h1 class="my-4">Lista de videos registrados</h1>
         <div class="tabla-video"> 

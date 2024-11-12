@@ -1,4 +1,4 @@
-#from django.shortcuts import render
+#para hacer consulta usamos import psycopg2 y definimos las conexiones y el cursor para proceder a desarrollar las consultas
 # Create your views here.
 import re
 from django.http import HttpResponse
@@ -20,6 +20,26 @@ def validar_nombre_usuario(nombre_usuario):
     print("Nombre del usuario inválido. Solo debe contener letras (A-Z, a-z).")
     return False
 
+def validar_nombre_video(nombre_video):
+    # Valor alfanumérico (A-Z, a-z, 0-9 )
+    if re.fullmatch(r"[A-Za-z0-9 ]+", nombre_video):
+        return True
+    print("Nombre del video inválido. Debe ser alfanumérico (A-Z, a-z, 0-9).")
+    return False
+
+def validar_extension_video(extension_video):
+    # Valor alfanumérico (A-Z, a-z, 0-9) seguido de .com
+    if re.fullmatch(r"[A-Za-z0-9]+\.(com)", extension_video):
+        return True
+    print("Extensión del video inválida. Debe ser alfanumérica seguida de '.com'.")
+    return False
+
+def validar_tamaño(tamano):
+    # Valor numérico (0-3)
+    if re.fullmatch(r"[0-3]", tamano):
+        return True
+    print("Tamaño inválido. Debe ser un número entre 0 y 3.")
+    return False
 
 def index(request):
     mensajeParaID = False
@@ -56,34 +76,44 @@ def interfazUsuario(request, user):
     # Obtener los videos de ese usuario
     videos = Video.objects.filter(usuario=usuario)
     
-    mensaje = False  # Variable para mensajes de confirmación o error
+    mensajeNombreVideo = False
+    mensajeRutaVideo = False
+    mensajeTamañoVideo = False
     
     if request.method == "POST":
         nombreVideo = request.POST.get("nombreVideo")
         rutaVideo = request.POST.get("rutaVideo")
         tamañoVideo = request.POST.get("videoTamaño")
-        
+        if validar_nombre_video(nombreVideo) == False:
+            mensajeNombreVideo = True
+        if validar_extension_video(rutaVideo) == False:
+            mensajeRutaVideo = True
+        if validar_tamaño(tamañoVideo) == False:
+            mensajeTamañoVideo = True
+        if mensajeNombreVideo or mensajeRutaVideo or mensajeTamañoVideo:
+            return render(request, "interfazDeUsuario.html", {
+                "videos": videos, 
+                "mensajeNombreVideo": mensajeNombreVideo,
+                "mensajeRutaVideo": mensajeRutaVideo,
+                "mensajeTamañoVideo": mensajeTamañoVideo,   
+            })
         # Validamos que todos los campos requeridos están completos
-        if nombreVideo and rutaVideo and tamañoVideo:
-            try:
-                tamañoVideo = float(tamañoVideo)  # Convertimos a float si tiene valor válido
-                # Crea y guarda el nuevo video en la base de datos
-                nuevo_video = Video(
-                    videoNombre=nombreVideo,
-                    videoRuta=rutaVideo,
-                    videoTamaño=tamañoVideo,
-                    usuario=usuario  # Aquí estamos usando el objeto `usuario` recuperado
+        tamañoVideo = float(tamañoVideo)  # Convertimos a float si tiene valor válido
+        # Crea y guarda el nuevo video en la base de datos
+        nuevo_video = Video(
+                videoNombre=nombreVideo,
+                videoRuta=rutaVideo,
+                videoTamaño=tamañoVideo,
+                usuario=usuario  # Aquí estamos usando el objeto `usuario` recuperado
                 )
-                nuevo_video.save()
-                mensaje = "El video se guardó correctamente."
-                return render(request, "interfazDeUsuario.html", {"videos": videos, "mensaje": mensaje})
-            except ValueError:
-                mensaje = True
-        else:
-            mensaje = True
-    
+        nuevo_video.save()
+        return render(request, "interfazDeUsuario.html", {
+                "videos": videos,   
+            })
     # Renderizamos el HTML completo con el mensaje y los videos filtrados
-    return render(request, "interfazDeUsuario.html", {"videos": videos, "mensaje": mensaje})
+    return render(request, "interfazDeUsuario.html", {
+                "videos": videos,  
+            })
 
 def allVideos(request):
     videos = Video.objects.all()
