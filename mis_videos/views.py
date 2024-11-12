@@ -49,8 +49,6 @@ def index(request):
     
     return render(request, "index.html", {"mensajeParaID": mensajeParaID, "mensajeParaNombre": mensajeParaNombre})
 
-
-
 def interfazUsuario(request, user):
     # Recuperar el usuario por su ID
     usuario = Usuario.objects.get(usuarioID=user)
