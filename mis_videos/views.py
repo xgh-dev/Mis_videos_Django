@@ -1,11 +1,16 @@
 #para hacer consulta usamos import psycopg2 y definimos las conexiones y el cursor para proceder a desarrollar las consultas
 # Create your views here.
 import re
-from django.http import HttpResponse
+#from django.http import HttpResponse
 from .models import Video,Usuario
 from django.shortcuts import render,redirect
+# redirect dirige el usuario a otra URL y se utiliza el request de la vista en la cual se ejecuta, redirige al usuario a otra URL o vista, como si se hiciera una nueva solicitud.
+# render, renderiza una plantilla y la muestra en la misma solicitud
+#Usa render cuando quieras presentar una página directamente, y redirect cuando sea necesario redirigir al usuario a otro lugar
+
 #from validaciones.validaciones import validar_nombre_usuario,validar_usuario_id
-#
+
+
 def validar_usuario_id(numero_nomina):
     # Valor alfanumérico (A-Z, a-z, 0-9)
     if re.fullmatch(r"[A-Za-z0-9]+", numero_nomina):
