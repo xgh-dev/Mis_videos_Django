@@ -5,16 +5,16 @@ from django.db import models
 
 # Create your models here.
 
-# Username = adnim
+# Datos del admin
+# Username = admin
 # Email address: admin@example.com
-# Password: xgh270999
-# Password (again): xgh270999
+# Password: prueba123
+# Password (again): prueba123
 # Superuser created successfully.
 
 class Usuario(models.Model):
     usuarioID = models.CharField(max_length=200, primary_key=True)  # Campo de clave primaria
     usuarioNombre = models.CharField(max_length=200)
-
     def __str__(self):
         return self.usuarioID
     def retornarID(self):
