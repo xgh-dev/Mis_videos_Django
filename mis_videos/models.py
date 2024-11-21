@@ -13,21 +13,50 @@ from django.db import models
 # Superuser created successfully.
 
 class Usuario(models.Model):
-    usuarioID = models.CharField(max_length=200, primary_key=True)  # Campo de clave primaria
+    """
+    Representa la tabla usuario en la base de datos.
+
+    Atributos:
+        usuarioID (str): Id del usuario.
+        usuarioNombre (str): Nombre del usuario.
+    """
+    usuarioID = models.CharField(max_length=200, primary_key=True)
     usuarioNombre = models.CharField(max_length=200)
+
     def __str__(self):
+        """
+        Returas:
+            str: El identificador único del usuario.
+        """
         return self.usuarioID
+
     def retornarID(self):
+        """
+        Returna:
+            str: El id del usuario.
+        """
         return self.usuarioID
 
 class Video(models.Model):
-    videoNombre = models.CharField(max_length=255,primary_key=True)  # Nombre del video
-    videoRuta = models.CharField(max_length=500)    # Ruta del video
-    videoTamaño = models.FloatField()               # Tamaño del video en MB o GB
-    usuario = models.ForeignKey(Usuario, to_field="usuarioID", on_delete=models.CASCADE)  # Relación con Usuario
+    """
+    Representa la tabla video en la base de datos.
+
+    Atributos:
+        videoNombre (str): Nombre del video. Es clave primaria.
+        videoRuta (str): Ruta donde se encuentra almacenado el video.
+        videoTamaño (float): Tamaño del video en megabytes.
+        usuario (ForeignKey): Relación con la clase Usuario que indica el dueño del video.
+    """
+    videoNombre = models.CharField(max_length=255, primary_key=True)
+    videoRuta = models.CharField(max_length=500)
+    videoTamaño = models.FloatField()
+    usuario = models.ForeignKey(Usuario, to_field="usuarioID", on_delete=models.CASCADE)
 
     def __str__(self):
+        """
+        Returna:
+            str: El nombre del video.
+        """
         return self.videoNombre
-    #def retornarUsuario(self):
-    #    return self.usuario.usuarioID
+
     

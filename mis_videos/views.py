@@ -17,7 +17,7 @@ def validar_usuario_id(numero_nomina):
         return True
     print("Número de nómina inválido. Debe ser alfanumérico (A-Z, a-z, 0-9).")
     return False
-#
+
 def validar_nombre_usuario(nombre_usuario):
     # Valor alfabético (A-Z, a-z)
     if re.fullmatch(r"[A-Za-z]+", nombre_usuario):
@@ -45,6 +45,7 @@ def validar_tamaño(tamano):
         return True
     print("Tamaño inválido. Debe ser un número entre 0 y 3.")
     return False
+
 
 def index(request):
     mensajeParaID = False
