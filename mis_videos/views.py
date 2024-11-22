@@ -8,7 +8,7 @@ from django.shortcuts import render,redirect
 # render, renderiza una plantilla y la muestra en la misma solicitud
 #Usa render cuando quieras presentar una página directamente, y redirect cuando sea necesario redirigir al usuario a otro lugar
 
-#from validaciones.validaciones import validar_nombre_usuario,validar_usuario_id
+#from validaciones import validar_usuario_id,validar_nombre_usuario,validar_nombre_video,validar_tamaño,validar_extension_video
 
 
 def validar_usuario_id(numero_nomina):
