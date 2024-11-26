@@ -12,35 +12,35 @@ class Validaciones():
         self.elemento_para_validar = elemento_para_validar
     
     def validar_usuario_id(self):
-        # Valor alfanumérico (A-Z, a-z, 0-9)
+        #Valor alfanumérico (A-Z, a-z, 0-9)
         if re.fullmatch(r"[A-Za-z0-9]+", self.elemento_para_validar):
             return True
         print("Número de nómina inválido. Debe ser alfanumérico (A-Z, a-z, 0-9).")
         return False
 
     def validar_nombre_usuario(self):
-        # Valor alfabético (A-Z, a-z)
+        #Valor alfabético (A-Z, a-z)
         if re.fullmatch(r"[A-Za-z]+", self.elemento_para_validar):
             return True
         print("Nombre del usuario inválido. Solo debe contener letras (A-Z, a-z).")
         return False
 
     def validar_nombre_video(self):
-        # Valor alfanumérico (A-Z, a-z, 0-9 )
+        #Valor alfanumérico (A-Z, a-z, 0-9 )
         if re.fullmatch(r"[A-Za-z0-9 ]+", self.elemento_para_validar):
             return True
         print("Nombre del video inválido. Debe ser alfanumérico (A-Z, a-z, 0-9).")
         return False
 
     def validar_extension_video(self):
-        # Valor alfanumérico (A-Z, a-z, 0-9) seguido de .com
+        #Valor alfanumérico (A-Z, a-z, 0-9) seguido de .com
         if re.fullmatch(r"[A-Za-z0-9]+\.(com)", self.elemento_para_validar):
             return True
         print("Extensión del video inválida. Debe ser alfanumérica seguida de '.com'.")
         return False
 
     def validar_tamaño(self):
-        # Valor numérico (0-3)
+        #Valor numérico (0-3)
         if re.fullmatch(r"[0-3]", self.elemento_para_validar):
             return True
         print("Tamaño inválido. Debe ser un número entre 0 y 3.")
@@ -51,7 +51,7 @@ def index(request):
     mensajeParaNombre = False
     
     if request.method == "POST":
-        # Obtener los datos del formulario
+        #Obtener los datos del formulario
         usuario_id = request.POST.get("usuarioID")
         usuario_nombre = request.POST.get("usuarioNombre")
         if Validaciones(usuario_id).validar_usuario_id() == False:
@@ -59,26 +59,26 @@ def index(request):
         if Validaciones(usuario_nombre).validar_nombre_usuario() == False:
             mensajeParaNombre = True
 
-        # Si hay algún error de validación, renderiza con los mensajes de error
+        #Si hay algún error de validación, renderiza con los mensajes de error
         if mensajeParaID or mensajeParaNombre:
             return render(request, "index.html", {
                 "mensajeParaID": mensajeParaID,
                 "mensajeParaNombre": mensajeParaNombre
             })
 
-        # Crear o recuperar el usuario desde la base de datos
+        #Crear o recuperar el usuario desde la base de datos
         usuario, existe = Usuario.objects.get_or_create(usuarioID=usuario_id, usuarioNombre=usuario_nombre)
         
-        # Redirigir a la interfaz de usuario con el ID del usuario
+        #Redirigir a la interfaz de usuario con el ID del usuario
         return redirect('interfazUsuario', user=usuario)
     
     return render(request, "index.html", {"mensajeParaID": mensajeParaID, "mensajeParaNombre": mensajeParaNombre})
 
 def interfazUsuario(request, user):
-    # Recuperar el usuario por su ID
+    #Recuperar el usuario por su ID
     usuario = Usuario.objects.get(usuarioID=user)
     
-    # Obtener los videos de ese usuario
+    #Obtener los videos de ese usuario
     videos = Video.objects.filter(usuario=usuario)
     
     mensajeNombreVideo = False
@@ -102,20 +102,20 @@ def interfazUsuario(request, user):
                 "mensajeRutaVideo": mensajeRutaVideo,
                 "mensajeTamañoVideo": mensajeTamañoVideo,   
             })
-        # Validamos que todos los campos requeridos están completos
+        #Validamos que todos los campos requeridos están completos
         tamañoVideo = float(tamañoVideo)  # Convertimos a float si tiene valor válido
-        # Crea y guarda el nuevo video en la base de datos
+        #Crea y guarda el nuevo video en la base de datos
         nuevo_video = Video(
                 videoNombre=nombreVideo,
                 videoRuta=rutaVideo,
                 videoTamaño=tamañoVideo,
-                usuario=usuario  # Aquí estamos usando el objeto `usuario` recuperado
+                usuario=usuario  #Aquí estamos usando el objeto `usuario` recuperado
                 )
         nuevo_video.save()
         return render(request, "interfazDeUsuario.html", {
                 "videos": videos,   
             })
-    # Renderizamos el HTML completo con el mensaje y los videos filtrados
+    #Renderizamos el HTML completo con el mensaje y los videos filtrados
     return render(request, "interfazDeUsuario.html", {
                 "videos": videos,  
             })
@@ -126,6 +126,7 @@ def allVideos(request):
 
 def eliminarVideo(request,NombreDelVideo):
     video = Video.objects.get(videoNombre=NombreDelVideo)
-    usuario = video.usuario
+    usuario = video.usuario #extraemos el id del usuario de la variable video
+    #print(usuario)
     video.delete()
-    return redirect('interfazUsuario', user=usuario.usuarioID)
+    return redirect('interfazUsuario', user=usuario)
