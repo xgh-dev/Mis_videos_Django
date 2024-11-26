@@ -41,7 +41,7 @@ class Validaciones():
 
     def validar_tamaño(self):
         #Valor numérico (0-3)
-        if re.fullmatch(r"[0-3]", self.elemento_para_validar):
+        if self.elemento_para_validar <= 3:
             return True
         print("Tamaño inválido. Debe ser un número entre 0 y 3.")
         return False
@@ -88,7 +88,7 @@ def interfazUsuario(request, user):
     if request.method == "POST":
         nombreVideo = request.POST.get("nombreVideo")
         rutaVideo = request.POST.get("rutaVideo")
-        tamañoVideo = request.POST.get("videoTamaño")
+        tamañoVideo = float(request.POST.get("videoTamaño"))
         if Validaciones(nombreVideo).validar_nombre_video() == False:
             mensajeNombreVideo = True
         if Validaciones(rutaVideo).validar_extension_video() == False:
@@ -103,7 +103,7 @@ def interfazUsuario(request, user):
                 "mensajeTamañoVideo": mensajeTamañoVideo,   
             })
         #Validamos que todos los campos requeridos están completos
-        tamañoVideo = float(tamañoVideo)  # Convertimos a float si tiene valor válido
+        #tamañoVideo = float(tamañoVideo)  # Convertimos a float si tiene valor válido
         #Crea y guarda el nuevo video en la base de datos
         nuevo_video = Video(
                 videoNombre=nombreVideo,
