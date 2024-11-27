@@ -10,11 +10,14 @@
         body{
             padding: 0;
             margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
         }
         .tabla-video{
             height: 300px; /* Ajusta la altura según sea necesario */
             overflow: auto;
             border: 1px solid #ddd;
+            background-color: #fff;
         }
         th{
             position: sticky;/*evitamos que los titulos se muevan*/
@@ -24,15 +27,22 @@
             padding: 10px;
             display: flex;
             flex-direction : row;
-            
+            gap: 20px;
             align-items: center;
             height: 100vh;            
         }
         .container{
-            /*border: 5px black solid;*/
-            display: grid;
-            grid-template-columns: 1fr 1fr; /* Dos columnas iguales */
-            gap: 10px; 
+            border: 1px solid #ddd;
+            padding: 15px;
+            display: flex; /* Ajustamos a Flexbox */
+            flex: 1; /* Ambos contenedores ocupan el mismo espacio */
+            flex-direction: row; /* Alineación por defecto */
+            justify-content: space-between; /* Espaciado uniforme entre hijos */
+            gap: 10px; /* Espacio interno */
+            background-color: #fff; /* Fondo claro */
+            border-radius: 8px; /* Bordes redondeados */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil para destacar */
+
         }
         /* Media query para pantallas pequeñas (como móviles) */
         @media (max-width: 1000px) {
