@@ -78,7 +78,7 @@ class Validaciones():
         Returns:
             bool: True si el tamaño es válido, False si no lo es.
         """
-        if self.elemento_para_validar <= 3:
+        if self.elemento_para_validar <= 3 and self.elemento_para_validar > 0:
             return True
         print("Tamaño inválido. Debe ser un número entre 0 y 3.")
         return False
