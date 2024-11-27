@@ -78,8 +78,10 @@ class Validaciones():
         Returns:
             bool: True si el tamaño es válido, False si no lo es.
         """
-        if self.elemento_para_validar <= 3 and self.elemento_para_validar > 0:
-            return True
+        if self.elemento_para_validar != "":
+            valor = float(self.elemento_para_validar)
+            if valor <= 3 and valor > 0:
+                return True
         print("Tamaño inválido. Debe ser un número entre 0 y 3.")
         return False
 
@@ -144,7 +146,7 @@ def interfazUsuario(request, user):
     if request.method == "POST":
         nombreVideo = request.POST.get("nombreVideo")
         rutaVideo = request.POST.get("rutaVideo")
-        tamañoVideo = float(request.POST.get("videoTamaño"))
+        tamañoVideo = request.POST.get("videoTamaño")
         if Validaciones(nombreVideo).validar_nombre_video() == False:
             mensajeNombreVideo = True
         if Validaciones(rutaVideo).validar_extension_video() == False:
@@ -164,7 +166,7 @@ def interfazUsuario(request, user):
         nuevo_video = Video(
                 videoNombre=nombreVideo,
                 videoRuta=rutaVideo,
-                videoTamaño=tamañoVideo,
+                videoTamaño=float(tamañoVideo),
                 usuario=usuario  # Aquí estamos usando el objeto `usuario` recuperado
                 )
         nuevo_video.save()
